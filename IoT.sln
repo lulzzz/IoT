@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IoT.TestClient", "IoT.TestC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IoT.Messages", "IoT.Messages\IoT.Messages.csproj", "{38D04587-510A-4E64-A808-4AFB9029106F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IoT.TestPublisherClient", "IoT.TestPublisherClient\IoT.TestPublisherClient.csproj", "{B4AFFCDD-B4B9-48C6-80E2-821DD370989B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IoT.TestReceiveClient", "IoT.TestReceiveClient\IoT.TestReceiveClient.csproj", "{170DD8CC-5721-419A-B6E6-9890B98F4393}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,5 +35,13 @@ Global
 		{38D04587-510A-4E64-A808-4AFB9029106F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38D04587-510A-4E64-A808-4AFB9029106F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38D04587-510A-4E64-A808-4AFB9029106F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4AFFCDD-B4B9-48C6-80E2-821DD370989B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4AFFCDD-B4B9-48C6-80E2-821DD370989B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4AFFCDD-B4B9-48C6-80E2-821DD370989B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4AFFCDD-B4B9-48C6-80E2-821DD370989B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{170DD8CC-5721-419A-B6E6-9890B98F4393}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{170DD8CC-5721-419A-B6E6-9890B98F4393}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{170DD8CC-5721-419A-B6E6-9890B98F4393}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{170DD8CC-5721-419A-B6E6-9890B98F4393}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

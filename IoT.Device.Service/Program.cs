@@ -14,11 +14,12 @@ namespace IoT.Device.Service
             var handler = new DeviceConnectionHandler(mqttServer);
             mqttServer.ClientConnected += handler.ClientConnected;
             mqttServer.ClientDisconnected += handler.ClientDisconnected;
-            mqttServer.ApplicationMessageReceived += async (s, e) => await handler.ApplicationMessageReceivedAsync(s, e);
             mqttServer.ClientSubscribedTopic += handler.ClientSubscribedTopic;
             mqttServer.ClientUnsubscribedTopic += handler.ClientUnsubscribedTopic;
+            mqttServer.ApplicationMessageReceived += handler.ApplicationMessageReceived;
 
             await mqttServer.StartAsync(new MqttServerOptions());
+
             Console.WriteLine("Press any key to exit.");
             Console.ReadLine();
             await mqttServer.StopAsync();

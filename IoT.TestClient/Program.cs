@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using IoT.Messages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -11,54 +13,37 @@ namespace IoT.TestClient
 {
     class Program
     {
-        private static bool isConfigured = false;
-
         static void Main(string[] args)
         {
-            // create client instance 
-            var client = new MqttClient("127.0.0.1");
+            int nrOfClients = 10;
+            int waitTime = 20;
+            long nrOfMessagesPerClient = 10000;
 
-            // register to message received 
-            client.MqttMsgPublishReceived += MqttMsgPublishReceived;
-
-            string clientId = Guid.NewGuid().ToString();
-            client.Connect(clientId);
-
-            // subscribe to the topic "/home/temperature" with QoS 2 
-            client.Subscribe(new string[] { $"/v1/{clientId}/config/response" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
-
-            while(!isConfigured)
+            var clients = new List<Client>();
+            var topics = new[] { "topic/a", "topic/b" };
+            for (int i = 0; i < nrOfClients; i++)
             {
-                SendStatus(client, clientId);
-                Thread.Sleep(2000);
+                var client = new Client("client_"+i, waitTime, nrOfMessagesPerClient, topics[i % 2], topics[(i+1) % 2]);
+                clients.Add(client);
             }
-            SendStatus(client, clientId);
 
-            Console.WriteLine("Press enter to exit");
+            var tasks = new List<Task>();
+            foreach(var client in clients)
+            {
+                tasks.Add(Task.Run(() => client.Start()));
+            }
+            Task.WaitAll(tasks.ToArray());
+
+            Console.WriteLine("all run, press enter to disconnect");
             Console.ReadLine();
-            client.Disconnect();
-        }
 
-        private static void SendStatus(MqttClient client, string clientId)
-        {
-            Console.WriteLine($"Send Status: Configured {isConfigured}");
-            var msg = new StatusMsg()
+            foreach (var client in clients)
             {
-                Configured = isConfigured
-            };
-
-            // publish a message on "/home/temperature" topic with QoS 2 
-            client.Publish($"/v1/{clientId}/config/request", MessageConverter.Serialize(msg), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
-        }
-
-        private static void MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
-        {
-            if ((e.Topic != null) && e.Topic.EndsWith("/config/response"))
-            {
-                var msg = MessageConverter.Deserialize<ConfigMsg>(e.Message);
-                Console.WriteLine($"Config received: {Encoding.UTF8.GetString(e.Message)}");
-                isConfigured = true;
+                client.Dispose();
             }
+                
+            Console.WriteLine("press enter to exit");
+            Console.ReadLine();
         }
     }
 }
